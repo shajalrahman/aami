@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday Dhansha 🎂</title>
+  <meta name="description" content="A special birthday surprise for Dhansha" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎂</text></svg>" />
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <!-- Floating Hearts Background -->
+  <div id="floating-hearts" aria-hidden="true"></div>
+
+  <!-- ===== SCREEN 1: Polaroid Card ===== -->
+  <main id="screen-card" class="screen active">
+    <div class="soft-gradient-bg"></div>
+    <div class="main-stage">
+      <div id="flip-card" class="flip-card-container">
+        <div class="flip-card-inner">
+          <!-- FRONT: Polaroid -->
+          <div class="flip-card-front polaroid-card">
+            <div class="photo-wrapper">
+              <img src="/images/bow.png" alt="Bow" class="tilted-bow" />
+              <img src="/images/cat.gif" alt="Happy Cat" class="photo-img" />
+            </div>
+            <p class="birthday-title">Happy Birthday!</p>
+            <p class="tap-hint">✨ Tap card to enter passcode</p>
+          </div>
+          <!-- BACK: Passcode -->
+          <div class="flip-card-back passcode-section">
+            <h2 class="passcode-title">Enter Passcode</h2>
+            <div class="dots-container" id="dots-container"></div>
+            <div class="keypad-grid" id="keypad-grid"></div>
+            <button class="unflip-btn" id="unflip-btn">← Back to Photo</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ===== SCREEN 2: Lamp Pull ===== -->
+  <section id="screen-lamp" class="screen">
+    <div class="soft-gradient-bg"></div>
+    <div class="lamp-stage">
+      <!-- Ceiling mount -->
+      <div class="lamp-mount"></div>
+      <div class="lamp-rod"></div>
+      <!-- Lamp body with 3D CSS design -->
+      <div class="lamp-body" id="lamp-body">
+        <div class="lamp-sphere">
+          <div class="lamp-highlight"></div>
+          <div class="lamp-face">
+            <div class="lamp-eye lamp-eye-left"></div>
+            <div class="lamp-eye lamp-eye-right"></div>
+            <div class="lamp-smile"></div>
+          </div>
+        </div>
+        <div class="lamp-cap-bottom"></div>
+      </div>
+      <!-- SVG chain rendered here -->
+      <svg id="chain-svg" class="chain-svg" xmlns="http://www.w3.org/2000/svg"></svg>
+      <!-- Draggable handle -->
+      <div class="chain-handle" id="chain-handle">
+        <div class="handle-ring"></div>
+      </div>
+      <p class="drag-hint" id="drag-hint">DRAG THE STRING IN ANY DIRECTION</p>
+    </div>
+  </section>
+
+  <!-- ===== SCREEN 3: Fire Emoji ===== -->
+  <section id="screen-fire" class="screen">
+    <div class="soft-gradient-bg"></div>
+    <div class="fire-stage">
+      <button class="fire-btn" id="fire-btn">
+        <span class="fire-emoji">🔥</span>
+      </button>
+      <p class="fire-hint">Tap to light the candles</p>
+    </div>
+  </section>
+
+  <!-- ===== SCREEN 4: Cake & Cut ===== -->
+  <section id="screen-cake" class="screen">
+    <div class="soft-gradient-bg"></div>
+    <div id="cake-emoji-blast" class="cake-emoji-blast" aria-hidden="true"></div>
+    <div class="cake-stage">
+      <div class="cake-header-area">
+        <!-- Pre-cut header -->
+        <div class="cake-header" id="cake-header">
+          <h2 class="cake-title">Swipe to Cut the Cake! 🎂</h2>
+          <p class="cake-subtitle">Drag your finger/cursor to slice</p>
+        </div>
+        <!-- Revealed after cut -->
+        <div class="cake-bday-reveal" id="cake-bday-reveal">
+          <h2 class="cake-bday-title">Happy Birthday, Dhansha!</h2>
+          <div class="cake-bday-heart">♥</div>
+        </div>
+      </div>
+      <div class="cake-wrapper" id="cake-wrapper">
+        <img src="/images/cake.gif" alt="Birthday Cake" class="cake-img" id="cake-img" />
+        <canvas id="cake-canvas" class="cake-canvas"></canvas>
+      </div>
+      <p class="swipe-hint" id="swipe-hint"></p>
+      <button class="next-scene-btn" id="next-scene-btn" aria-label="Next Scene">
+        Next Scene →
+      </button>
+    </div>
+  </section>
+
+  <!-- ===== SCREEN 5: Envelope Letter ===== -->
+  <section id="screen-message" class="screen">
+    <div class="soft-gradient-bg letter-bg"></div>
+    <div id="confetti-container"></div>
+
+    <!-- Phase 1: Envelope -->
+    <div class="env-stage" id="env-stage">
+      <div class="env-header">
+        <h2 class="env-title">A Letter, Just For You</h2>
+        <p class="env-sub">Tap the envelope to unseal</p>
+      </div>
+
+      <div class="envelope" id="envelope" role="button" tabindex="0" aria-label="Open your letter">
+        <!-- Triangular top flap -->
+        <div class="env-flap" id="env-flap"></div>
+        <!-- Envelope body with fold-line gradients -->
+        <div class="env-body"></div>
+        <!-- Front: seal + text -->
+        <div class="env-front">
+          <div class="env-seal" id="env-seal"><span>✦</span></div>
+          <p class="env-to">For You, Dhansha</p>
+          <p class="env-hint">TAP TO UNSEAL ✦</p>
+        </div>
+        <!-- Letter paper that slides upward on open -->
+        <div class="env-paper" id="env-paper"></div>
+      </div>
+    </div>
+
+      <!-- Phase 2: Full letter (revealed after envelope opens) -->
+    <div class="letter-view" id="letter-view">
+      <div class="letter-page">
+        <span class="lp-icon">💌</span>
+        <h1 class="lp-title">Happy Birthday<br><span class="lp-name">Dhansha!</span></h1>
+        <div class="lp-rule"></div>
+        <p class="lp-body">
+          May your special day be filled with love, laughter, and all the happiness your heart can hold.
+          You deserve all the beautiful things life has to offer! 🌟
+        </p>
+        <p class="lp-body lp-italic">
+          Here's to another year of amazing adventures, unforgettable memories, and dreams coming true! 💖
+        </p>
+        <div class="lp-footer">
+          <span class="lp-hearts">♥ ♥ ♥</span>
+          <p class="lp-sig">With all the love in the world</p>
+        </div>
+        <button class="lp-game-btn" id="lp-game-btn">🎈 One last surprise →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SCREEN 6: Balloon Pop Game ===== -->
+  <section id="screen-game" class="screen">
+    <div class="soft-gradient-bg game-bg"></div>
+
+    <!-- Active game -->
+    <div class="game-stage" id="game-stage">
+      <div class="game-header">
+        <h2 class="game-title">Pop the Balloons! 🎈</h2>
+        <p class="game-sub">Pop all 21 for your 21st birthday!</p>
+        <div class="game-score">
+          <span class="score-num" id="pop-count">0</span>
+          <span class="score-div">/</span>
+          <span class="score-total">21</span>
+        </div>
+      </div>
+      <div class="balloon-field" id="balloon-field"></div>
+    </div>
+
+    <!-- Victory (all 21 popped) -->
+    <div class="game-victory" id="game-victory">
+      <div class="victory-card">
+        <p class="victory-burst">🎉🎂🎉</p>
+        <h2 class="victory-title">21 Pops!</h2>
+        <p class="victory-msg">For 21 incredible years of</p>
+        <p class="victory-name">Dhansha! 🎀</p>
+        <div class="victory-hearts">♥ ♥ ♥</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Background Music (royalty-free birthday tune) -->
+  <audio id="bg-music" loop preload="auto">
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg" />
+  </audio>
+
+  <script type="module" src="/main.js"></script>
+</body>
+</html>
