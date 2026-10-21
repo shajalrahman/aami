@@ -32,6 +32,20 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ============================================
+// MUSIC  (plays after correct passcode)
+// ============================================
+function playMusic() {
+  if (!bgMusic) return;
+  bgMusic.volume = 0.5;
+  bgMusic.currentTime = 0;
+  bgMusic.play().catch(() => {
+    // Autoplay blocked — play on next user interaction
+    const resume = () => { bgMusic.play(); document.removeEventListener('click', resume); };
+    document.addEventListener('click', resume);
+  });
+}
+
+// ============================================
 // FLOATING HEARTS
 // ============================================
 function createFloatingHearts() {
