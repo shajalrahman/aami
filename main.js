@@ -143,9 +143,10 @@ function handleKeyPress(key) {
       if (enteredCode === PASSCODE) {
         // Success feedback
         dots.forEach(d => d.classList.add('success'));
-        // Trigger flower burst animation
+        // Start music immediately on correct passcode
+        playMusic();
+        // Trigger flower burst → then transition
         createFlowerBurst(() => {
-          playMusic();
           transitionTo('lamp');
         });
       } else {
@@ -196,7 +197,7 @@ function createFlowerBurst(onComplete) {
 
   const W = window.innerWidth;
   const H = window.innerHeight;
-  const COUNT = 250;
+  const COUNT = 80;
   const flowers = [];
 
   // Generate spawn positions on all 4 edges
@@ -222,7 +223,7 @@ function createFlowerBurst(onComplete) {
     const target = getTarget();
     const size = 100 + Math.random() * 80; // 100–180px (large)
     const src = flowerImages[Math.floor(Math.random() * flowerImages.length)];
-    const delay = Math.random() * 700; // stagger 0–700ms
+    const delay = Math.random() * 400; // stagger 0–400ms
     const spinDir = Math.random() > 0.5 ? 1 : -1;
     const spinSpeed = 0.1 + Math.random() * 0.2; // 0.1–0.3 rot/sec (very slow)
 
