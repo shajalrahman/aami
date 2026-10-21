@@ -12,6 +12,29 @@
   <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
+  <!-- ===== FLOWER LOADER ===== -->
+  <div id="flower-loader" aria-label="Loading" role="status">
+    <div class="fl-ring"></div>
+    <img
+      class="fl-flower"
+      src="/Flowers/Realistic Pink Blossom Cutout.png"
+      alt=""
+      aria-hidden="true"
+    />
+    <p class="fl-text">Loading<span class="fl-dots"></span></p>
+  </div>
+  <!-- Loader dismiss — inline so it runs even if main.js has errors -->
+  <script>
+    setTimeout(function () {
+      var el = document.getElementById('flower-loader');
+      if (!el) return;
+      el.style.transition = 'opacity 0.55s ease';
+      el.style.opacity = '0';
+      el.style.pointerEvents = 'none';
+      setTimeout(function () { if (el && el.parentNode) el.parentNode.removeChild(el); }, 600);
+    }, 1800);
+  </script>
+
   <!-- Floating Hearts Background -->
   <div id="floating-hearts" aria-hidden="true"></div>
 
@@ -191,7 +214,7 @@
   </section>
 
   <!-- Background Music -->
-  <audio id="bg-music" loop preload="auto">
+  <audio id="bg-music" loop preload="none">
     <source src="/song.mp3" type="audio/mpeg" />
   </audio>
 

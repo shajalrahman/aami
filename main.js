@@ -366,18 +366,7 @@ function updateDots(dots) {
   });
 }
 
-// ============================================
-// MUSIC
-// ============================================
-function playMusic() {
-  if (bgMusic) {
-    bgMusic.volume = 0.4;
-    bgMusic.play().catch(() => {
-      // Browser might block autoplay, that's ok
-      console.log('Music autoplay blocked');
-    });
-  }
-}
+
 
 // ============================================
 // SCREEN 2: LAMP PULL (SVG smooth rope)
@@ -663,7 +652,7 @@ function createBottomFlowerBurst(onComplete) {
   const H = window.innerHeight;
   const COUNT = 200;
   const IN_DURATION  = 2400; // ms to rise up
-  const HOLD_DURATION = 400;  // ms to linger
+  const HOLD_DURATION = 0;    // no linger — continuous sweep
   const OUT_DURATION = 1800; // ms to exit upward
 
   const flowers = [];
@@ -1154,6 +1143,112 @@ function initEnvelopeLetter() {
 }
 
 // ============================================
+// SHATTER FLOWER BURST  (victory: center → all directions)
+// ============================================
+function createShatterBurst() {
+  const overlay = document.createElement('div');
+  overlay.style.cssText = `
+    position: fixed; inset: 0; z-index: 10000;
+    pointer-events: none; overflow: hidden; background: transparent;
+  `;
+  document.body.appendChild(overlay);
+
+  const flowerImages = [
+    '/Flowers/Isolated Blush Pink Blossom.png',
+    '/Flowers/Isolated Photorealistic Pink Rose Bloom.png',
+    '/Flowers/Isolated Pink Rose Bloom.png',
+    '/Flowers/Pink Anemone with Purple Center.png',
+    '/Flowers/Pink Wild Rose Blossom Cutout.png',
+    '/Flowers/Realistic Pink Blossom Cutout (1).png',
+    '/Flowers/Realistic Pink Blossom Cutout.png',
+  ];
+
+  const W = window.innerWidth;
+  const H = window.innerHeight;
+  const COUNT    = 140;
+  const DURATION = 1900; // ms each flower travels
+  const cx = W / 2;
+  const cy = H / 2;
+
+  const flowers = [];
+  const angles  = new Array(COUNT).fill(0);
+  let startTime = null;
+  let lastTime  = null;
+
+  for (let i = 0; i < COUNT; i++) {
+    // All spawn tightly around the centre
+    const spawnX = cx + (Math.random() - 0.5) * 70;
+    const spawnY = cy + (Math.random() - 0.5) * 70;
+
+    // Fly outward at a random angle, far enough to exit any screen edge
+    const ang  = Math.random() * Math.PI * 2;
+    const dist = 280 + Math.random() * Math.max(W, H) * 0.72;
+    const targetX = spawnX + Math.cos(ang) * dist;
+    const targetY = spawnY + Math.sin(ang) * dist;
+
+    const size    = 60 + Math.random() * 80;
+    const src     = flowerImages[Math.floor(Math.random() * flowerImages.length)];
+    const delay   = Math.random() * 180;            // tiny stagger so burst feels alive
+    const spinDir = Math.random() > 0.5 ? 1 : -1;
+    const spinSpd = 0.5 + Math.random() * 0.8;     // fast spin during shatter
+
+    const el = document.createElement('img');
+    el.src = src;
+    el.draggable = false;
+    el.style.cssText = `
+      position: absolute;
+      left: ${spawnX}px; top: ${spawnY}px;
+      width: ${size}px; height: ${size}px;
+      object-fit: contain;
+      transform: translate(-50%,-50%) rotate(0deg);
+      opacity: 0;
+      pointer-events: none;
+      user-select: none;
+    `;
+    overlay.appendChild(el);
+    flowers.push({ el, spawnX, spawnY, targetX, targetY, delay, spinDir, spinSpd });
+  }
+
+  function easeOutQuint(t) { return 1 - Math.pow(1 - t, 5); }
+
+  function animate(now) {
+    if (!startTime) startTime = now;
+    if (!lastTime)  lastTime  = now;
+    const dt      = now - lastTime;
+    lastTime = now;
+    const elapsed = now - startTime;
+
+    flowers.forEach((f, i) => {
+      const local = elapsed - f.delay;
+      if (local < 0) return;
+      const t    = Math.min(1, local / DURATION);
+      const ease = easeOutQuint(t);
+
+      const x = f.spawnX + (f.targetX - f.spawnX) * ease;
+      const y = f.spawnY + (f.targetY - f.spawnY) * ease;
+
+      angles[i] += (f.spinSpd * 360 * dt) / 1000 * f.spinDir;
+
+      // Pop in fast at centre, fade out as they move away
+      const opacity = t < 0.1 ? t * 10 : Math.max(0, 1 - (t - 0.1) / 0.7);
+
+      f.el.style.left      = x + 'px';
+      f.el.style.top       = y + 'px';
+      f.el.style.opacity   = opacity;
+      f.el.style.transform = `translate(-50%,-50%) rotate(${angles[i]}deg) scale(${0.5 + ease * 0.7})`;
+    });
+
+    if (elapsed < DURATION + 250) {
+      requestAnimationFrame(animate);
+    } else {
+      overlay.remove();
+    }
+  }
+
+  requestAnimationFrame(animate);
+}
+
+// ============================================
 // SCREEN 6: BALLOON POP GAME  (balloons rise bottom → top)
 // ============================================
 function initBalloonGame() {
@@ -1277,7 +1372,9 @@ function initBalloonGame() {
         done = true;
         setTimeout(() => {
           if (victory) victory.classList.add('visible');
-          launchConfetti();
+          // First shatter wave immediately, second wave after 800ms
+          createShatterBurst();
+          setTimeout(createShatterBurst, 800);
         }, 520);
       }
     }

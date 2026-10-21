@@ -53,6 +53,97 @@ body {
   position: relative;
 }
 
+/* ============================================
+   FLOWER LOADER
+   ============================================ */
+#flower-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  background: linear-gradient(
+    140deg,
+    #FFF0F8 0%,
+    var(--soft-pink) 45%,
+    #F5D4F0 100%
+  );
+}
+
+
+/* Shimmer ring behind the flower */
+.fl-ring {
+  position: absolute;
+  width: clamp(160px, 40vmin, 220px);
+  height: clamp(160px, 40vmin, 220px);
+  border-radius: 50%;
+  background: transparent;
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  box-shadow:
+    0 0 0 3px rgba(161, 118, 171, 0.25),
+    0 0 30px 10px rgba(253, 149, 213, 0.2);
+  animation: ringPulse 2s ease-in-out infinite;
+}
+
+@keyframes ringPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 3px rgba(161,118,171,0.25), 0 0 30px 10px rgba(253,149,213,0.20);
+  }
+  50% {
+    transform: scale(1.08);
+    box-shadow: 0 0 0 5px rgba(161,118,171,0.40), 0 0 50px 18px rgba(253,149,213,0.35);
+  }
+}
+
+/* Flower image */
+.fl-flower {
+  position: relative;
+  width: clamp(120px, 30vmin, 170px);
+  height: clamp(120px, 30vmin, 170px);
+  object-fit: contain;
+  animation: flowerSpin 4s ease-in-out infinite;
+  filter: drop-shadow(0 8px 24px rgba(255, 130, 180, 0.40));
+  will-change: transform;
+}
+
+@keyframes flowerSpin {
+  0%   { transform: rotate(0deg)   scale(1);    }
+  25%  { transform: rotate(8deg)   scale(1.06); }
+  50%  { transform: rotate(0deg)   scale(1.1);  }
+  75%  { transform: rotate(-8deg)  scale(1.06); }
+  100% { transform: rotate(0deg)   scale(1);    }
+}
+
+/* Loading text */
+.fl-text {
+  position: relative;
+  font-family: var(--font-script);
+  font-size: clamp(1.1rem, 3.5vw, 1.4rem);
+  color: var(--lavender-outline);
+  letter-spacing: 0.06em;
+  font-style: italic;
+}
+
+/* Animated dots */
+.fl-dots::after {
+  content: '';
+  animation: dotCycle 1.4s steps(4, end) infinite;
+}
+
+@keyframes dotCycle {
+  0%   { content: '';    }
+  25%  { content: '.';   }
+  50%  { content: '..';  }
+  75%  { content: '...'; }
+  100% { content: '';    }
+}
+
+
 /* --- Screens --- */
 .screen {
   position: fixed;
